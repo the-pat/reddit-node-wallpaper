@@ -20,7 +20,7 @@ const get = (next) => {
         }
 
         const data = JSON.parse(body);
-        get(data);
+        next(data);
     });
 };
 
@@ -32,4 +32,4 @@ const randomIndex = array => Math.floor(Math.random() * array.length);
 
 const download = (uri, path, next) => request(uri).pipe(fs.createWriteStream(path)).on('close', next);
 
-get();
+getAndSetWallpaper();
