@@ -1,0 +1,23 @@
+{
+  "name": "node-wallpaper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/the-pat/node-wallpaper.git"
+  },
+  "author": "the-pat",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/the-pat/node-wallpaper/issues"
+  },
+  "homepage": "https://github.com/the-pat/node-wallpaper#readme",
+  "dependencies": {
+    "request": "^2.81.0",
+    "wallpaper": "^2.5.0"
+  }
+}
