@@ -2,7 +2,17 @@ const fs = require('fs');
 const request = require('request');
 const wallpaper = require('wallpaper');
 
-const get = () => {
+const getAndSetWallpaper = () => {
+    get(data => {
+        const urls = redditPostUrls(data);
+        const url = urls[randomIndex(urls)];
+        const filename = 'wallpaper.jpg';
+
+        download(url, filename, () => wallpaper.set(filename).then(() => console.log('wallpaper set')));
+    });
+};
+
+const get = (next) => {
     request('https://www.reddit.com/r/earthporn/hot.json?limit=10', (err, response, body) => {
         if (err || response.statusCode !== 200) {
             console.error(err, response);
@@ -10,17 +20,16 @@ const get = () => {
         }
 
         const data = JSON.parse(body);
-
-        // -- callback
-        const posts = data.data.children;
-        const filteredPosts = posts.filter((post) => post.kind === 't3' && post.data.url.length);
-        const urls = filteredPosts.map(post => post.data.url);
-        const index = Math.floor(Math.random() * filteredPosts.length);
-        const url = urls[index];
-        const filename = 'wallpaper.jpg';
-
-        request(url).pipe(fs.createWriteStream(filename)).on('close', () => wallpaper.set(filename).then(() => console.log('wallpaper set')));
+        get(data);
     });
 };
+
+const redditPostUrls = posts => posts.data.children
+                                          .filter(post => post.data.url.length)
+                                          .map(post => post.data.url);
+
+const randomIndex = array => Math.floor(Math.random() * array.length);
+
+const download = (uri, path, next) => request(uri).pipe(fs.createWriteStream(path)).on('close', next);
 
 get();
