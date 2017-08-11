@@ -1,35 +1,30 @@
 const fs = require('fs');
 const request = require('request');
+const rp = require('request-promise-native');
 const wallpaper = require('wallpaper');
 
-const getAndSetWallpaper = () => {
-    get(data => {
-        const urls = redditPostUrls(data);
-        const url = urls[randomIndex(urls)];
-        const filename = 'wallpaper.jpg';
+const getURL = obj => new Promise(resolve => {
+    const posts = obj.data.children.filter(post => post.data.url.length && !post.data.over_18);
+    const index = Math.floor(Math.random() * posts.length);
+    const url = posts[index].data.url;
 
-        download(url, filename, () => wallpaper.set(filename).then(() => console.log('wallpaper set')));
-    });
+    resolve(url);
+});
+
+const download = (uri, path) => new Promise(resolve => request(uri).pipe(fs.createWriteStream(path)).on('close', resolve));
+
+const set = (path) => wallpaper.set(path);
+
+let options = {
+    uri: 'https://www.reddit.com/r/earthporn/hot.json?limit=10',
+    json: true,
 };
 
-const get = (next) => {
-    request('https://www.reddit.com/r/earthporn/hot.json?limit=10', (err, response, body) => {
-        if (err || response.statusCode !== 200) {
-            console.error(err, response);
-            return;
-        }
+let path = './wallpaper.jpg';
 
-        const data = JSON.parse(body);
-        next(data);
-    });
-};
-
-const redditPostUrls = posts => posts.data.children
-                                          .filter(post => post.data.url.length)
-                                          .map(post => post.data.url);
-
-const randomIndex = array => Math.floor(Math.random() * array.length);
-
-const download = (uri, path, next) => request(uri).pipe(fs.createWriteStream(path)).on('close', next);
-
-getAndSetWallpaper();
+rp(options)
+    .then(getURL)
+    .then(url => download(url, path))
+    .then(() => set(path))
+    .then(() => console.log('success!'))
+    .catch(error => console.error(error));
