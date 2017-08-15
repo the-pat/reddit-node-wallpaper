@@ -1,0 +1,10 @@
+{
+    "subreddits": ["earthporn", "mapporn", "wallpapers"],
+    "sort": "top",
+    "from": "month",
+    "score": 100,
+    "domains": ["i.imgur.com", "imgur.com", "i.redd.it"],
+    "types": ["png", "jpg", "jpeg"],
+    "directory": "C:/Users/Public/Downloads/.wallpapers",
+    "limit": 10
+}

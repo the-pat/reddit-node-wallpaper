@@ -1,25 +1,25 @@
 {
-    "name": "reddit-node-wallpaper",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-        "start": "node index.js",
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "repository": {
+  "name": "reddit-node-wallpaper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
     "type": "git",
     "url": "git+https://github.com/the-pat/node-wallpaper.git"
   },
-    "author": "the-pat",
-    "license": "ISC",
-    "bugs": {
+  "author": "the-pat",
+  "license": "ISC",
+  "bugs": {
     "url": "https://github.com/the-pat/node-wallpaper/issues"
   },
   "homepage": "https://github.com/the-pat/node-wallpaper#readme",
-    "dependencies": {
-        "request": "^2.81.0",
-        "request-promise-native": "^1.0.4",
-        "wallpaper": "^2.5.0"
-    }
+  "dependencies": {
+    "request": "^2.81.0",
+    "request-promise-native": "^1.0.4",
+    "wallpaper": "^2.5.0"
+  }
 }
