@@ -1,5 +1,5 @@
 {
-    "subreddits": ["earthporn", "mapporn", "wallpapers"],
+    "subreddits": ["earthporn", "wallpapers"],
     "sort": "top",
     "from": "month",
     "score": 100,
