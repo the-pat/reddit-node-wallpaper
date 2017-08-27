@@ -13,15 +13,27 @@ const change = () => {
         simple: true,
     };
 
-    const path = './wallpaper';
+    const path = config.directory + '/wallpaper';
     let name = '';
+
+    if (!fs.existsSync(config.directory)) {
+        fs.mkdirSync(config.directory);
+    }
 
     rp(options)
         .then(getURL)
         .then(url => download(url, path))
         .then(() => getType(path))
-        // TODO: reject if an html page
-        .then(type => { name = `${path}.${type.ext}`; fs.rename(path, name); })
+        .then(type => new Promise((resolve, reject) => {
+            if (!type && !config.types.includes(type.ext)) {
+                reject('type is null');
+                return;
+            }
+
+            name = `${path}.${type.ext}`;
+            fs.rename(path, name);
+            resolve();
+        }))
         .then(() => wallpaper.set(name))
         .then(() => console.log('success!'))
         .catch(error => console.error(error));
@@ -36,7 +48,7 @@ const getURL = obj => new Promise((resolve, reject) => {
                                        url: post.data.url,
                                        domain: post.data.domain.toLowerCase(),
                                    }));
-    // TODO: if all posts are filtered, reject and try again
+
     if (!posts) {
         reject('No posts match the config criteria.');
         return;
