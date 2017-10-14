@@ -5,11 +5,9 @@ const request = require('request');
 const rp = require('request-promise-native');
 const wallpaper = require('wallpaper');
 
-const maxRetry = config.maxRetry
-
-const change = (start) => {
-    if(start === maxRetry) {
-        console.log('We try our best but sorry')
+const change = (start = 0) => {
+    if(start === config.maxRetry) {
+        console.log('We tried our best, but were unable to change the wallpaper. Sorry.')
     }
     else {
         const url = `https://www.reddit.com/r/${randomElement(config.subreddits)}/${config.sort}.json?t=${config.from}limit=${config.limit}`;
@@ -75,4 +73,4 @@ const download = (uri, path) => new Promise(resolve => request(uri).pipe(fs.crea
 
 const getType = path => new Promise((resolve, reject) => fs.readFile(path, (err, data) => err ? reject(err) : resolve(fileType(data))));
 
-change(0);
+change();

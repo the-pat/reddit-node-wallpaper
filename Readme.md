@@ -1,5 +1,5 @@
-# How to edit a config
-You can edit in `config.json` file, for instance,
+# reddit-node-wallpaper
 
-* `maxRetry`  the maximum of time you want to retry
-* `score` to use to filter the reddit posts
+## Configuration
+- `maxRetry`: the maximum number of times you want to retry
+- `score`: the minimum score of the reddit post
