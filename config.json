@@ -6,5 +6,6 @@
     "domains": ["i.imgur.com", "imgur.com", "i.redd.it"],
     "types": ["png", "jpg", "jpeg"],
     "directory": "C:/Users/Public/Downloads/.wallpapers",
-    "limit": 15
+    "limit": 15,
+    "maxRetry": 5
 }
