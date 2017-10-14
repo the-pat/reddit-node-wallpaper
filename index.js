@@ -43,7 +43,8 @@ const getURL = obj => new Promise((resolve, reject) => {
     const posts = obj.data.children.filter(post => post.kind.toLowerCase() === 't3' &&
                                                    post.data &&
                                                    config.domains.includes(post.data.domain.toLowerCase()) &&
-                                                   !post.data.over_18)
+                                                   !post.data.over_18 &&
+                                                    post.data.score >= config.score)
                                    .map(post => ({
                                        url: post.data.url,
                                        domain: post.data.domain.toLowerCase(),
