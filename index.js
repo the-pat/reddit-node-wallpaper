@@ -5,14 +5,19 @@ const request = require('request');
 const rp = require('request-promise-native');
 const wallpaper = require('wallpaper');
 
-const change = () => {
-    const url = `https://www.reddit.com/r/${randomElement(config.subreddits)}/${config.sort}.json?t=${config.from}&limit=${config.limit}`;
+const change = (start = 0) => {
+    if(start === config.maxRetry) {
+        console.log('We tried our best, but were unable to change the wallpaper. Sorry.');
+        return;
+    }
+  
+    const url = `https://www.reddit.com/r/${randomElement(config.subreddits)}/${config.sort}.json?t=${config.from}limit=${config.limit}`;
     const options = {
         uri: url,
         json: true,
         simple: true,
     };
-
+    
     const path = config.directory + '/wallpaper';
     let name = '';
 
@@ -36,7 +41,11 @@ const change = () => {
         }))
         .then(() => wallpaper.set(name))
         .then(() => console.log('success!'))
-        .catch(error => console.error(error));
+        .catch(error => {
+            console.error(error)
+            change(start + 1)
+        });
+    }
 };
 
 const getURL = obj => new Promise((resolve, reject) => {
