@@ -59,3 +59,8 @@ typings/
 
 # ignore the wallpaper
 wallpaper.jpg
+
+# ignore IDE project files
+.idea
+
+config.json

@@ -6,7 +6,7 @@ const rp = require('request-promise-native');
 const wallpaper = require('wallpaper');
 
 const change = () => {
-    const url = `https://www.reddit.com/r/${randomElement(config.subreddits)}/${config.sort}.json?t=${config.from}limit=${config.limit}`;
+    const url = `https://www.reddit.com/r/${randomElement(config.subreddits)}/${config.sort}.json?t=${config.from}&limit=${config.limit}`;
     const options = {
         uri: url,
         json: true,
@@ -41,13 +41,15 @@ const change = () => {
 
 const getURL = obj => new Promise((resolve, reject) => {
     const posts = obj.data.children.filter(post => post.kind.toLowerCase() === 't3' &&
-                                                   post.data &&
-                                                   config.domains.includes(post.data.domain.toLowerCase()) &&
-                                                   !post.data.over_18)
-                                   .map(post => ({
-                                       url: post.data.url,
-                                       domain: post.data.domain.toLowerCase(),
-                                   }));
+        post.data &&
+        config.domains.includes(post.data.domain.toLowerCase()) &&
+        !post.data.over_18 &&
+        post.data.preview.images[0].source.width >= config.minimum_image_size.width &&
+        post.data.preview.images[0].source.height >= config.minimum_image_size.height)
+        .map(post => ({
+            url: post.data.preview.images[0].source.url,
+            domain: post.data.domain.toLowerCase(),
+        }));
 
     if (!posts) {
         reject('No posts match the config criteria.');
