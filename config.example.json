@@ -1,0 +1,14 @@
+{
+    "subreddits": ["earthporn", "wallpapers"],
+    "sort": "top",
+    "from": "year",
+    "score": 100,
+    "domains": ["i.imgur.com", "imgur.com", "i.redd.it"],
+    "types": ["png", "jpg", "jpeg"],
+    "directory": "your_directory",
+    "limit": 15,
+    "minimum_image_size": {
+        "width": "1920",
+        "height": "1080"
+    }
+}
