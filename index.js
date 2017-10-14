@@ -6,7 +6,7 @@ const rp = require('request-promise-native');
 const wallpaper = require('wallpaper');
 
 const change = () => {
-    const url = `https://www.reddit.com/r/${randomElement(config.subreddits)}/${config.sort}.json?t=${config.from}limit=${config.limit}`;
+    const url = `https://www.reddit.com/r/${randomElement(config.subreddits)}/${config.sort}.json?t=${config.from}&limit=${config.limit}`;
     const options = {
         uri: url,
         json: true,
