@@ -6,7 +6,7 @@ const rp = require('request-promise-native');
 const wallpaper = require('wallpaper');
 
 const change = () => {
-    const url = `https://www.reddit.com/r/${randomElement(config.subreddits)}/${config.sort}.json?t=${config.from}limit=${config.limit}`;
+    const url = `https://www.reddit.com/r/${randomElement(config.subreddits)}/${config.sort}.json?t=${config.from}&limit=${config.limit}`;
     const options = {
         uri: url,
         json: true,
@@ -43,7 +43,8 @@ const getURL = obj => new Promise((resolve, reject) => {
     const posts = obj.data.children.filter(post => post.kind.toLowerCase() === 't3' &&
                                                    post.data &&
                                                    config.domains.includes(post.data.domain.toLowerCase()) &&
-                                                   !post.data.over_18)
+                                                   !post.data.over_18 &&
+                                                    post.data.score >= config.score)
                                    .map(post => ({
                                        url: post.data.url,
                                        domain: post.data.domain.toLowerCase(),
