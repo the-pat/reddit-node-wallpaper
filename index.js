@@ -7,43 +7,44 @@ const wallpaper = require('wallpaper');
 
 const change = (start = 0) => {
     if(start === config.maxRetry) {
-        console.log('We tried our best, but were unable to change the wallpaper. Sorry.')
+        console.log('We tried our best, but were unable to change the wallpaper. Sorry.');
+        return;
     }
-    else {
-        const url = `https://www.reddit.com/r/${randomElement(config.subreddits)}/${config.sort}.json?t=${config.from}limit=${config.limit}`;
-        const options = {
-            uri: url,
-            json: true,
-            simple: true,
-        };
+  
+    const url = `https://www.reddit.com/r/${randomElement(config.subreddits)}/${config.sort}.json?t=${config.from}limit=${config.limit}`;
+    const options = {
+        uri: url,
+        json: true,
+        simple: true,
+    };
     
-        const path = config.directory + '/wallpaper';
-        let name = '';
-    
-        if (!fs.existsSync(config.directory)) {
-            fs.mkdirSync(config.directory);
-        }
-    
-        rp(options)
-            .then(getURL)
-            .then(url => download(url, path))
-            .then(() => getType(path))
-            .then(type => new Promise((resolve, reject) => {
-                if (!type && !config.types.includes(type.ext)) {
-                    reject('type is null');
-                    return;
-                }
-    
-                name = `${path}.${type.ext}`;
-                fs.rename(path, name);
-                resolve();
-            }))
-            .then(() => wallpaper.set(name))
-            .then(() => console.log('success!'))
-            .catch(error => {
-                console.error(error)
-                change(start + 1)
-            });
+    const path = config.directory + '/wallpaper';
+    let name = '';
+
+    if (!fs.existsSync(config.directory)) {
+        fs.mkdirSync(config.directory);
+    }
+
+    rp(options)
+        .then(getURL)
+        .then(url => download(url, path))
+        .then(() => getType(path))
+        .then(type => new Promise((resolve, reject) => {
+            if (!type && !config.types.includes(type.ext)) {
+                reject('type is null');
+                return;
+            }
+
+            name = `${path}.${type.ext}`;
+            fs.rename(path, name);
+            resolve();
+        }))
+        .then(() => wallpaper.set(name))
+        .then(() => console.log('success!'))
+        .catch(error => {
+            console.error(error)
+            change(start + 1)
+        });
     }
 };
 
@@ -51,7 +52,8 @@ const getURL = obj => new Promise((resolve, reject) => {
     const posts = obj.data.children.filter(post => post.kind.toLowerCase() === 't3' &&
                                                    post.data &&
                                                    config.domains.includes(post.data.domain.toLowerCase()) &&
-                                                   !post.data.over_18)
+                                                   !post.data.over_18 &&
+                                                    post.data.score >= config.score)
                                    .map(post => ({
                                        url: post.data.url,
                                        domain: post.data.domain.toLowerCase(),
