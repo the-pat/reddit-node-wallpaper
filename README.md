@@ -1,4 +1,4 @@
-# Reddit Wallpaper Finder script in NodeJS
+# reddit-node-wallpaper
 
 ### Pre-requisites:
 
