@@ -52,6 +52,7 @@ const getURL = obj => new Promise((resolve, reject) => {
         post.data &&
         config.domains.includes(post.data.domain.toLowerCase()) &&
         !post.data.over_18 &&
+        post.data.score >= config.score &&
         post.data.preview.images[0].source.width >= config.minimum_image_size.width &&
         post.data.preview.images[0].source.height >= config.minimum_image_size.height)
         .map(post => ({
