@@ -6,7 +6,12 @@ const rp = require('request-promise-native');
 const wallpaper = require('wallpaper');
 
 const change = (start = 0) => {
-    if(start === config.maxRetry) {
+    if (!config) {
+        console.log('Please configure the `config.json`.');
+        return;
+    }
+
+    if (start === config.maxRetry) {
         console.log('We tried our best, but were unable to change the wallpaper. Sorry.');
         return;
     }
@@ -45,14 +50,13 @@ const change = (start = 0) => {
             console.error(error)
             change(start + 1)
         });
-    }
 };
 
 const getURL = obj => new Promise((resolve, reject) => {
     const posts = obj.data.children.filter(post => post.kind.toLowerCase() === 't3' &&
         post.data &&
         config.domains.includes(post.data.domain.toLowerCase()) &&
-        !post.data.over_18 &&
+        post.data.over_18 === (config.over_18 === 'true') &&
         post.data.preview.images[0].source.width >= config.minimum_image_size.width &&
         post.data.preview.images[0].source.height >= config.minimum_image_size.height)
         .map(post => ({
@@ -71,7 +75,6 @@ const getURL = obj => new Promise((resolve, reject) => {
 
 const randomElement = array => array[Math.floor(Math.random() * array.length)];
 
-// TODO: create/find an imgur download module (get help grabbing an image from an album)
 const download = (uri, path) => new Promise(resolve => request(uri).pipe(fs.createWriteStream(path)).on('close', resolve));
 
 const getType = path => new Promise((resolve, reject) => fs.readFile(path, (err, data) => err ? reject(err) : resolve(fileType(data))));

@@ -7,5 +7,10 @@
     "types": ["png", "jpg", "jpeg"],
     "directory": "C:/Users/Public/Downloads/.wallpapers",
     "limit": 15,
-    "maxRetry": 5
+    "maxRetry": 5,
+    "over_18": false,
+    "minimum_image_size": {
+        "width": "1920",
+        "height": "1080"
+    }
 }
