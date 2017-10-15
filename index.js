@@ -30,7 +30,7 @@ const change = (start = 0) => {
         .then(url => download(url, path))
         .then(() => getType(path))
         .then(type => new Promise((resolve, reject) => {
-            if (!type && !config.types.includes(type.ext)) {
+            if (!type || !config.types.includes(type.ext)) {
                 reject('type is null');
                 return;
             }
@@ -42,10 +42,9 @@ const change = (start = 0) => {
         .then(() => wallpaper.set(name))
         .then(() => console.log('success!'))
         .catch(error => {
-            console.error(error)
-            change(start + 1)
+            console.error(error);
+            change(start + 1);
         });
-    }
 };
 
 const getURL = obj => new Promise((resolve, reject) => {
