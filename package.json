@@ -19,7 +19,7 @@
   "homepage": "https://github.com/the-pat/node-wallpaper#readme",
   "dependencies": {
     "file-type": "^6.1.0",
-    "request": "^2.81.0",
+    "request": "^2.88.0",
     "request-promise-native": "^1.0.4",
     "wallpaper": "^2.5.0"
   }
