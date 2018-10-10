@@ -38,8 +38,8 @@ const change = async (start = 0) => {
 
 		name = `${path}.${type.ext}`;
 		fs.renameSync(path, name);
-    wallpaper.set(name);
-    console.log('Success!');
+		wallpaper.set(name);
+		console.log('Success!');
 	}
 	catch (e) {
 		console.error(e);
