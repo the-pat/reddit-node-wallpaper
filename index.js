@@ -5,6 +5,7 @@ const request = require('request');
 const rp = require('request-promise-native');
 const wallpaper = require('wallpaper');
 
+
 const change = async (start = 0) => {
 	try {
 		if (!config) {
@@ -22,11 +23,12 @@ const change = async (start = 0) => {
 			simple: true,
 		};
 		
-		const path = config.directory + '/wallpaper';
+		const path = `${config.directory}/wallpaper`;
 		let name = '';
-
-		if (!fs.existsSync(config.directory)) {
-			fs.mkdirSync(config.directory);
+		
+		const directoryExists = await exists(config.directory);
+		if (!directoryExists) {
+			await makeDirectory(config.directory);
 		}
 
 		const obj = await rp(options);
@@ -37,7 +39,7 @@ const change = async (start = 0) => {
 		if (!type || !config.types.includes(type.ext)) throw 'type is null';
 
 		name = `${path}.${type.ext}`;
-		fs.renameSync(path, name);
+		await renameDirectory(path, name);
 		wallpaper.set(name);
 		console.log('Success!');
 	}
@@ -69,6 +71,13 @@ const getURL = async obj => {
 
 	return randomElement(posts).url;
 };
+
+const exists = path => new Promise(res => fs.stat(path, (err) => err ? res(true) : res(false)));
+
+const makeDirectory = path => new Promise((res, rej) => fs.mkdir(path, (err) => err ? rej(err) : res()));
+
+const renameDirectory = (oldPath, newPath) => new Promise((res, rej) =>
+	fs.rename(oldPath, newPath, (err) => err ? rej(err) : res()));
 
 const randomElement = array => array[Math.floor(Math.random() * array.length)];
 
